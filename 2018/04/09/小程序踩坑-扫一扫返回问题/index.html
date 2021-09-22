@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/ven/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/ven/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="梁文冲博客">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="小程序项目最近要改版，底部是tab导航栏，对应切换各个页面。这样的需求看起来也是比较简单的，就配置个tabbar，然后改改ui就可以。但是有个tab比较特殊，是扫一扫功能。 ui效果图中间橙色部分为扫一扫">
+<meta name="keywords" content="梁文冲, 梁文冲个人博客">
+<meta property="og:type" content="article">
+<meta property="og:title" content="小程序踩坑-扫一扫返回问题">
+<meta property="og:url" content="https://lwcreber.github.io/2018/04/09/小程序踩坑-扫一扫返回问题/index.html">
+<meta property="og:site_name" content="梁文冲个人博客">
+<meta property="og:description" content="小程序项目最近要改版，底部是tab导航栏，对应切换各个页面。这样的需求看起来也是比较简单的，就配置个tabbar，然后改改ui就可以。但是有个tab比较特殊，是扫一扫功能。 ui效果图中间橙色部分为扫一扫">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://lwcreber.github.io/images/xiaochengxu.png">
+<meta property="og:updated_time" content="2019-08-11T15:42:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="小程序踩坑-扫一扫返回问题">
+<meta name="twitter:description" content="小程序项目最近要改版，底部是tab导航栏，对应切换各个页面。这样的需求看起来也是比较简单的，就配置个tabbar，然后改改ui就可以。但是有个tab比较特殊，是扫一扫功能。 ui效果图中间橙色部分为扫一扫">
+<meta name="twitter:image" content="https://lwcreber.github.io/images/xiaochengxu.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lwcreber.github.io/2018/04/09/小程序踩坑-扫一扫返回问题/">
+
+
+
+
+
+  <title>小程序踩坑-扫一扫返回问题 | 梁文冲个人博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">梁文冲个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lwcreber.github.io/2018/04/09/小程序踩坑-扫一扫返回问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="梁文冲">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="梁文冲个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">小程序踩坑-扫一扫返回问题</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-09T20:53:08+08:00">
+                2018-04-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/04/09/小程序踩坑-扫一扫返回问题/" class="leancloud_visitors" data-flag-title="小程序踩坑-扫一扫返回问题">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>小程序项目最近要改版，底部是tab导航栏，对应切换各个页面。这样的需求看起来也是比较简单的，就配置个tabbar，然后改改ui就可以。但是有个tab比较特殊，是扫一扫功能。</p>
+<p>ui效果图<br><img src="/images/xiaochengxu.png" alt="image"><br>中间橙色部分为扫一扫<br> <a id="more"></a></p>
+<h2 id="无法按照设计图的tab中间图片需要突出的效果"><a href="#无法按照设计图的tab中间图片需要突出的效果" class="headerlink" title="无法按照设计图的tab中间图片需要突出的效果"></a>无法按照设计图的tab中间图片需要突出的效果</h2><p> 因为用的小程序提供的tabbar导航栏，只能在app.json文件配置一些tab的图标和文字，所以没有办法在tabbar里面做到移动图片的位置。虽然也有在网上找到自定义tabbar，但是引入进来小程序开发工具直接报错了，看到的github issue也有人提出问题，不过作者还没解决。所以这个ui效果只能放弃。</p>
+<h2 id="点击中间tab需要直接调起扫一扫"><a href="#点击中间tab需要直接调起扫一扫" class="headerlink" title="点击中间tab需要直接调起扫一扫"></a>点击中间tab需要直接调起扫一扫</h2><p>我的做法是点击中间tab，跳到一个空白页，页面监听<code>onTabItemTap</code>事件，在这个事件里面，直接调起扫一扫。</p>
+<h2 id="在扫一扫界面点击左上角返回，需要返回前一个页面"><a href="#在扫一扫界面点击左上角返回，需要返回前一个页面" class="headerlink" title="在扫一扫界面点击左上角返回，需要返回前一个页面"></a>在扫一扫界面点击左上角返回，需要返回前一个页面</h2><p>意思就是当前在第一个tab，然后点击了中间的扫一扫，这个时候点了返回，页面需要返回第一个tab。明白了需求肯定就是查怎么去监听这个返回操作，直接网上搜，有说到通过页面的生命周期函数<code>onShow</code>。在中级tab页的写了<code>onShow</code>,扫一扫返回的时候的确触发了<code>onShow</code>，所以以为简单了。就在调起扫一扫，之前设置了一个storage的key值，作用类似app的全局变量意思。只要在<code>onShow</code>里面判断这个标志位，就去跳转页面。当前切换tab的时候，也是需要通过storage来保存页面的url的，这样到时就能直接使用<code>wx.switch</code>来跳了（<code>特别说明下，跳转tab的页面只能使用wx.switch来跳转，这个在小程序的文档也有说明</code>）。前面已经能实现在扫一扫界面按返回可以跳回上一个前面了。那么接下来就是扫码后的处理了。项目扫码成功后，会调用接口，然后判断一下码是不是正确之类的处理。是正确的二维码时，就跳转到支付页。入坑开始。。。。</p>
+<p>我发现在扫码成功时会先跳到前一个页面，然后数据请求完成时，再跳到支付页。这样的情况我觉得是个问题，虽然没有问过产品这样做是否也可以。毕竟每次都跳回前一个页面，交互体验感非常不好。 然后就开始找原因。然后发现，扫二维码的时候，中间页面的<code>onShow</code>竟然也触发了，导致跟在扫一扫界面按返回的情况一样了。这样逻辑就重叠了。按正常逻辑肯定是想扫二维码的时候也设置一个状态，然后在onshow这边判断一下就可以。然而并没有这么简单，我尝试了发现根本就没有地方设置这个值。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wx.scanCode(&#123;</span><br><span class="line">  success: (res) =&gt; &#123;</span><br><span class="line">    console.log(res)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>上面是文档给出的demo，我在success的时候设置状态是没有任何作用的，感觉success没有开始，<code>onShow</code>已经触发了。然后这里感觉我被逻辑绕晕了，然后重新在纸上画逻辑图。发现扫一扫界面按返回以及扫码成功时状态值是一样的，因为扫码成功没有地方设置状态。这样难道意味着这个问题无法解决了？这样问题在网上搜索也没有任何相关的。那只能自己继续看看小程序的文档了，然后就是各种尝试吧。在文档中看着页面的跳转会触发页面对应的生命周期函数，也不断的尝试，最终都没有解决。最后在<code>wx.scanCode</code>api中看了看，试了试对应的函数，比如complete，突然发现好像按返回的时候，complete这个回调函数触发了，然后我就用fail回调函数，神奇的结果，在页面扫一扫的时候点击返回会触发这个fail函数。这样的话，我只需要在fail的时候去跳转到前一个页面就可以了，<code>onShow</code>里面就不处理任何东西了。这样能避免在扫码成功时会先跳到前一个页面，然后再跳到支付页面。调试了代码，问题完全解决！这个坑足足困了几天，小程序文档并没有说明在扫一扫的时候按左上角返回时，会触发<code>fail</code>回调函数，因为在文档里面的路由部分只是说到按左上角的返回会触发路由后的页面的<code>onShow</code>函数。所以就一直觉得只能是<code>onShow</code>这里来处理了。</p>
+<h3 id="一些无法知道的原因"><a href="#一些无法知道的原因" class="headerlink" title="一些无法知道的原因"></a>一些无法知道的原因</h3><p>主要抓了主要的过程写，其实其中尝试过很多方法，耗比较多时间。<code>onShow</code>触发的问题，页面进来直接调起扫一扫，按返回的时候，不知道为什么页面会两次触发<code>onShow</code>，一次是返回到该页面会触发这个知道，然而还会继续触发第二次是在不知道什么原因，可能是调用扫一扫这个再触发一次吧，这个原因也不知道是什么，对照了很久文档中的路由部分，实在是没看出为什么会触发第二次。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/16/移动端IOS滚动问题/" rel="next" title="移动端IOS滚动问题">
+                <i class="fa fa-chevron-left"></i> 移动端IOS滚动问题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/17/vue-ssr-部署到服务器/" rel="prev" title="vue-ssr 部署到服务器">
+                vue-ssr 部署到服务器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+        <div id="gitalk-container"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="梁文冲">
+            
+              <p class="site-author-name" itemprop="name">梁文冲</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/LwcReber" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#无法按照设计图的tab中间图片需要突出的效果"><span class="nav-number">1.</span> <span class="nav-text">无法按照设计图的tab中间图片需要突出的效果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#点击中间tab需要直接调起扫一扫"><span class="nav-number">2.</span> <span class="nav-text">点击中间tab需要直接调起扫一扫</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在扫一扫界面点击左上角返回，需要返回前一个页面"><span class="nav-number">3.</span> <span class="nav-text">在扫一扫界面点击左上角返回，需要返回前一个页面</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一些无法知道的原因"><span class="nav-number">3.1.</span> <span class="nav-text">一些无法知道的原因</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">梁文冲</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/ven/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/ven/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/ven/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/ven/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/ven/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/ven/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: 'dd6f21fe8cab27035906',
+          clientSecret: '2b6e1c7f9ffc0aef97559079e32cd736f1c1df8b',
+          repo: 'discuss',
+          owner: 'LwcReber',
+          admin: ['LwcReber'],
+          id:'gitalk_20180409205308',
+          labels: 'gitalk'.split(',').filter(l => l),
+          perPage: 10,
+          pagerDirection: 'last',
+          createIssueManually: true,
+          distractionFreeMode: false
+        })
+        gitalk.render('gitalk-container')
+       </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("tgTluW8PI9IdjmoPzvTnWuim-gzGzoHsz", "7pgTSekTOqiiWueo3s1nRuMI");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+  <script type="text/javascript" src="/js/src/js.cookie.js?v=5.1.4"></script>
+  <script type="text/javascript" src="/js/src/scroll-cookie.js?v=5.1.4"></script>
+
+
+  
+
+</body>
+</html>
